@@ -129,13 +129,14 @@ def brutes(username_list, username_selector, password_selector, login_btn_select
 success_selector = "#content > nav > form > div > input"
 
 banner = color.BOLD + color.RED +'''
+
    _____                      
  |__  /  /////    |\\       /||   /////   |\\   ||
    / /  /    \\   | |\\    //||  /    \\  ||\\  ||
  / /_  /  ////\\  | | \\  // || /  ////\\ || \\ ||  
 /____|/ _/     \\ | |  \\//  ||/ _/     \\||  \\||
   {0}[{1}-{2}]--> {3}V.2.3
-  {4}[{5}-{6}]--> {7}coded by 
+  {4}[{5}-{6}]--> {7}coded by Zaman
   {8}[{9}-{10}]-->{11} brute-force tool                      '''.format(color.RED, color.CWHITE,color.RED,color.GREEN,color.RED, color.CWHITE,color.RED,color.GREEN,color.RED, color.CWHITE,color.RED,color.GREEN)
 
 if options.username_list == None:
